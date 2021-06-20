@@ -6,6 +6,7 @@ use App\Http\Controllers\Backend\DistrictController;
 use App\Http\Controllers\Backend\MunicipalityController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\ProvinceController;
+use App\Http\Controllers\Backend\SubCategoryController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\Backend\UnitController;
 /*
@@ -52,6 +53,12 @@ Route::prefix('backend/')->name('backend.')->group(function(){
     Route::delete('municipality/{id}/force-delete',[MunicipalityController::class,'forceDelete'])->name('municipality.forceDelete');
     Route::resource('municipality', MunicipalityController::class);
 
+
+    Route::get('subcategory/trash',[SubCategoryController::class,'trash'])->name('subcategory.trash');
+    Route::post('subcategory/{id}/restore',[SubCategoryController::class,'restore'])->name('subcategory.restore');
+    Route::delete('subcategory/{id}/force-delete',[SubCategoryController::class,'forceDelete'])->name('subcategory.forceDelete');
+    Route::resource('subcategory', SubCategoryController::class);
+
     Route::get('category/trash',[CategoryController::class,'trash'])->name('category.trash');
     Route::post('category/{id}/restore',[CategoryController::class,'restore'])->name('category.restore');
     Route::delete('category/{id}/force-delete',[CategoryController::class,'forceDelete'])->name('category.forceDelete');
@@ -61,5 +68,6 @@ Route::prefix('backend/')->name('backend.')->group(function(){
     Route::post('product/{id}/restore',[ProductController::class,'restore'])->name('product.restore');
     Route::delete('product/{id}/force-delete',[ProductController::class,'forceDelete'])->name('product.forceDelete');
     Route::resource('product', ProductController::class);
+
 
 });

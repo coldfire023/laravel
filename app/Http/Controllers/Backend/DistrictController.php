@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Backend\DistrictRequest;
 use App\Http\Requests\Backend\UnitRequest;
 use App\Models\District;
 use App\Models\Province;
@@ -56,7 +57,7 @@ class DistrictController extends BackendBaseController
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(UnitRequest $request)
+    public function store(DistrictRequest $request)
     {
         $request->request->add(['created_by' => auth()->user()->id]);
         $data['row'] = $this->model->create($request->all());
@@ -84,7 +85,7 @@ class DistrictController extends BackendBaseController
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function edit($id)
     {

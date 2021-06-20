@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers\Backend;
 
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\CategoryRequest;
 use App\Http\Requests\Backend\ProductRequest;
 use App\Http\Requests\Backend\UnitRequest;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\SubCategory;
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
+use PhpParser\Node\Attribute;
+use Illuminate\Database\Eloquent\Model;
+
 
 class ProductController extends BackendBaseController
 {
@@ -51,6 +57,8 @@ class ProductController extends BackendBaseController
         $data['units'] = Unit::pluck('name','id');
         $data['categories'] = Category::pluck('name','id');
         $data['subcategories'] = SubCategory::pluck('name','id');
+        $data['attributes'] = \App\Models\Attribute::pluck('name','id');
+
         return view($this->__loadDataToView($this->folder . 'create'),compact('data'));
     }
 
@@ -62,15 +70,34 @@ class ProductController extends BackendBaseController
      */
     public function store(ProductRequest $request)
     {
-        //image upload
-        if($request->hasFile('image_file'))
- {
-           $image=$this->uploadImage($request,'image_file');
-          $request->request->add(['image'=>$image]);
-}
+
+        $request->request->add(['stock' => $request->input('quantity')]);
         $request->request->add(['created_by' => auth()->user()->id]);
         $data['row'] = $this->model->create($request->all());
         if ($data['row']) {
+
+            // for multiple image upload
+
+            $imageFiles = $request->file('product_image');
+            $image_title = $request->input('image_title');
+            $imageArray['product_id'] = $data['row']->id;
+            for ($i = 0; $i < count($imageFiles); $i++){
+                $image =$imageFiles[$i];
+                $image_name = rand(6785, 9814) . '_' . $image->getClientOriginalName();
+                $image->move($this->image_path, $image_name);
+                if (count(config('image_dimension.' . $this->folder_name . '.images')) > 0) {
+                    foreach (config('image_dimension.' . $this->folder_name . '.images') as $dimension) {
+                        // open and resize an image file
+                        $img = Image::make($this->image_path . $image_name)->resize($dimension['width'], $dimension['height']);
+                        // save the same file as jpg with default quality
+                        $img->save($this->image_path . $dimension['width'] . '' . $dimension['height'] . '' . $image_name);
+                    }
+                }
+                $imageArray['image_name'] = $image_name;
+                $imageArray['image_title'] = $image_title[$i];
+                $imageArray['status']  = 1;
+                ProductImage::create($imageArray);
+            }
             $request->session()->flash('success_message', $this->panel . ' created successfully');
         } else {
             $request->session()->flash('error_message', $this->panel . 'creation failed');

@@ -127,7 +127,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="../charts/flot.html" class="nav-link">
+                    <a href="{{route('backend.subcategory.index')}}" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Sub Category</p>
                     </a>

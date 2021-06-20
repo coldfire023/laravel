@@ -26,7 +26,7 @@
             <thead>
             <tr>
                 <th>SN</th>
-                <th>Name</th>
+                <th>Title</th>
                 <th>Slug</th>
                 <th>Rank</th>
                 <th>Short Description</th>
@@ -44,7 +44,7 @@
             @forelse($data['rows'] as $index=>$row)
                 <tr>
                     <td>{{$index+1}}</td>
-                    <td>{{$row->name}}</td>
+                    <td>{{$row->title}}</td>
                     <td>{{$row->slug}}</td>
                     <td>{{$row->rank}}</td>
                     <td>{{$row->short_description}}</td>

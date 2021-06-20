@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Backend\ProvinceRequest;
 use App\Http\Requests\Backend\UnitRequest;
 use App\Models\District;
 use App\Models\Province;
@@ -52,7 +53,7 @@ class ProvinceController extends BackendBaseController
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(UnitRequest $request)
+    public function store(ProvinceRequest $request)
     {
         $request->request->add(['created_by' => auth()->user()->id]);
         $data['row'] = $this->model->create($request->all());
@@ -99,7 +100,7 @@ class ProvinceController extends BackendBaseController
      * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UnitRequest $request, $id)
+    public function update(ProvinceRequest $request, $id)
     {
         $data['row'] = $this->model->find($id);
         $request->request->add(['updated_by' => auth()->user()->id]);

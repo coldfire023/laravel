@@ -7,8 +7,8 @@
     @enderror
 </div>
 <div class="form-group">
-    {!! Form::label('subcategories', 'Subcategory',) !!}
-    {!! Form::select('subcategories', $data['subcategories'],null,['class'=>'form-control','placeholder'=>'Select Subcategories']);
+    {!! Form::label('subcategory_id', 'Subcategory',) !!}
+    {!! Form::select('subcategory_id', $data['subcategories'],null,['class'=>'form-control','placeholder'=>'Select Subcategories']);
  !!}
     @error('subcategories')
     <span class="text text-danger">{{$message}}</span>
@@ -89,7 +89,7 @@
     {{$message}}
     @enderror
 </div>
-<div class="form-group"> 
+<div class="form-group">
     {!! Form::label('flash_product', 'Feature product', ['class' => 'control-label']) !!}
     {!! Form::radio('flash_product',1)!!}Active
     {!! Form::radio('flash_product',0,true)!!}De Active
